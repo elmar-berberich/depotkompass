@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Icon Generator - DepotKompass</title>
+<style>body{font-family:system-ui;background:#0a0f1f;color:#fff;padding:20px;text-align:center}canvas{border-radius:20px;margin:10px auto;display:block;background:#0f172a} .btn{background:#2563eb;color:#fff;border:0;padding:16px 24px;border-radius:12px;font-weight:800;margin:10px;display:inline-block;text-decoration:none;cursor:pointer} .ok{background:#16a34a}</style></head>
+<body>
+<h1>🧭 DepotKompass Icon Generator</h1>
+<p>Erzeugt echte PNGs direkt in deinem Tablet - kein Download von extern</p>
+<canvas id="c512" width="512" height="512"></canvas>
+<button class="btn" onclick="download(512)">⬇️ icon-512.png speichern</button>
+<canvas id="c192" width="192" height="192"></canvas>
+<button class="btn" onclick="download(192)">⬇️ icon-192.png speichern</button>
+<canvas id="c180" width="180" height="180"></canvas>
+<button class="btn" onclick="download(180)">⬇️ icon-180.png speichern</button>
+<script>
+function draw(canvas,size){
+ const ctx=canvas.getContext('2d');
+ ctx.clearRect(0,0,size,size);
+ // background
+ ctx.fillStyle='#0a0f1f';
+ ctx.fillRect(0,0,size,size);
+ // circle bg
+ ctx.beginPath(); ctx.arc(size/2,size/2,size*0.42,0,Math.PI*2); ctx.fillStyle='#121a33'; ctx.fill();
+ // compass
+ const cx=size/2, cy=size/2, r=size*0.30;
+ // green top half
+ ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,Math.PI/2); ctx.strokeStyle='#4ade80'; ctx.lineWidth=size*0.04; ctx.stroke();
+ ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI/2,Math.PI*1.5); ctx.strokeStyle='#3b82f6'; ctx.lineWidth=size*0.04; ctx.stroke();
+ // needle
+ ctx.fillStyle='#4ade80';
+ ctx.beginPath(); ctx.moveTo(cx,cy-r*0.9); ctx.lineTo(cx-size*0.08,cy); ctx.lineTo(cx,cy); ctx.closePath(); ctx.fill();
+ ctx.fillStyle='#3b82f6';
+ ctx.beginPath(); ctx.moveTo(cx,cy+r*0.9); ctx.lineTo(cx+size*0.08,cy); ctx.lineTo(cx,cy); ctx.closePath(); ctx.fill();
+ // small star
+ ctx.fillStyle='#93c5fd';
+ ctx.beginPath(); ctx.arc(cx,cy,size*0.05,0,Math.PI*2); ctx.fill();
+ ctx.fillStyle='#0a0f1f'; ctx.beginPath(); ctx.arc(cx,cy,size*0.02,0,Math.PI*2); ctx.fill();
+}
+function download(s){
+ const canvas=document.getElementById('c'+s);
+ const a=document.createElement('a');
+ a.download='icon-'+s+'.png';
+ a.href=canvas.toDataURL('image/png');
+ a.click();
+}
+[512,192,180].forEach(s=>draw(document.getElementById('c'+s),s));
+</script>
+</body></html>
